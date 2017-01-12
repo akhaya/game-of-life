@@ -109,9 +109,8 @@ var gameOfLife = {
     var randomBtn = document.getElementById('reset_btn');
 
     var reset = function(cell) {
-
+      //randomizes board
       var randomNum = Math.random()
-
       if (randomNum < .5){
         cell.className = "dead";
         cell.setAttribute('data-status', 'dead');
@@ -125,13 +124,15 @@ var gameOfLife = {
       this.forEachCell(reset)
     };
     randomEvent = randomEvent.bind(this);
-
     randomBtn.addEventListener('click', randomEvent) // forEachCell(clear.bind()) )
 
 
   },
 
+  checkNeighbors: function(w,h){
 
+  },
+  checkStatus: function()
 
   step: function() {
     // Here is where you want to loop through all the cells
@@ -142,6 +143,20 @@ var gameOfLife = {
     // You need to:
     // 1. Count alive neighbors for all cells
     // 2. Set the next state of all cells based on their alive neighbors
+    for (var h = 0; h < this.height; h++) {
+      tablehtml += "<tr id='row+" + h + "'>";
+      for (var w = 0; w < this.width; w++) {
+        var currentCell=document.getElementByID(generateID(w,h));
+        var status;
+        var aliveN=0;
+        var deadN=0;
+
+        tablehtml += "<td data-status='dead' id='" + w + "-" + h + "'></td>";
+      }
+      tablehtml += "</tr>";
+    }
+    goltable.innerHTML = tablehtml;
+
   },
 
   enableAutoPlay: function() {

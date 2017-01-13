@@ -8,6 +8,8 @@ var gameOfLife = {
 
     // create <table> element
     var goltable = document.createElement("tbody");
+    goltable.id="tbody";
+
 
     // build Table HTML
     var tablehtml = '';
@@ -98,16 +100,15 @@ var gameOfLife = {
       }
     };
 
+    //clear button setup
     var clearEvent = function() {
       this.forEachCell(clear)
     };
     clearEvent = clearEvent.bind(this);
-
     clearBtn.addEventListener('click', clearEvent) // forEachCell(clear.bind()) )
 
-
+    //random button setup
     var randomBtn = document.getElementById('reset_btn');
-
     var reset = function(cell) {
       //randomizes board
       var randomNum = Math.random()
@@ -119,20 +120,65 @@ var gameOfLife = {
         cell.setAttribute('data-status', 'alive');
       }
     };
-
     var randomEvent = function() {
       this.forEachCell(reset)
     };
     randomEvent = randomEvent.bind(this);
     randomBtn.addEventListener('click', randomEvent) // forEachCell(clear.bind()) )
 
+    //step button setup
+    var stepBtn = document.getElementById('step_btn')
+    stepEvent = this.step.bind(this);
+    stepBtn.addEventListener('click', stepEvent);
 
   },
 
-  checkNeighbors: function(w,h){
-
+  checkNeighbors: function(x,y){
+    //check the neighboring cells and return count of alive.
+    console.log("in check neighbors")
+    var alive=0;
+    for (var h = (y-1); h <= (y+1); h++){
+      for(var w = (x-1); w <= (x+1); w++){
+        if(w!==x || h!==y){//WHAT
+          var cell=document.getElementById(this.generateID(w,h));
+          console.log("in check, cell is:"+cell);
+          if(this.isAlive(cell)) alive++;
+        }
+      }
+    }
+    console.log(alive);
+    return alive;
   },
-  checkStatus: function()
+
+  isAlive: function(cell){
+    //Checks the status, is it alive, of a cell
+    console.log("in isAlive and the cell is:" + cell)
+    if(cell){
+      return cell.className==="alive"
+    }else{
+      return false;
+    }
+  },
+
+  runTheRules:function(alive,status){
+    //checks for new state:
+    console.log("in run the rules")
+    if(status===true && alive<2){
+      console.log("dead");
+      return "dead";
+    }else if(status===true && alive <=3){
+      console.log("alive")
+      return "alive";
+    }else if(status===true && alive > 3){
+      console.log("dead")
+      return "dead";
+    }else if(status === false && alive===3){
+      console.log("alive")
+      return "alive"
+    }else{
+      return "dead";
+    }
+  },
 
   step: function() {
     // Here is where you want to loop through all the cells
@@ -143,19 +189,33 @@ var gameOfLife = {
     // You need to:
     // 1. Count alive neighbors for all cells
     // 2. Set the next state of all cells based on their alive neighbors
-    for (var h = 0; h < this.height; h++) {
-      tablehtml += "<tr id='row+" + h + "'>";
-      for (var w = 0; w < this.width; w++) {
-        var currentCell=document.getElementByID(generateID(w,h));
-        var status;
-        var aliveN=0;
-        var deadN=0;
+    console.log("Step is running");
 
-        tablehtml += "<td data-status='dead' id='" + w + "-" + h + "'></td>";
+    var newTable=""
+    for (var h = 0; h < this.height; h++) {
+      newTable += "<tr id='row+" + h + "'>";
+      for (var w = 0; w < this.width; w++) {
+        console.log("Width and Height: "+w+", "+h)
+        var currentCell=document.getElementById(this.generateID(w, h));
+        console.dir(currentCell);
+        var status=this.isAlive(currentCell);
+        console.log("status: "+ status)
+        var aliveN=this.checkNeighbors(w,h);
+        console.log("live neighbours:"+aliveN)
+        var newStatus=this.runTheRules(aliveN,status);
+        console.log("New Status: "+newStatus)
+        newTable += "<td data-status='"+newStatus+"' id='" + w + "-" + h + "' class='"+newStatus+"'></td>";
+        console.log("newTable:" +newTable)
+
       }
-      tablehtml += "</tr>";
+      newTable += "</tr>";
     }
-    goltable.innerHTML = tablehtml;
+    document.getElementById("tbody").remove();
+    var golTableNew = document.createElement("tbody");
+    golTableNew.id="tbody";
+    golTableNew.innerHTML = newTable;
+    var boardNew = document.getElementById('board');
+    boardNew.appendChild(golTableNew);
 
   },
 
@@ -167,3 +227,5 @@ var gameOfLife = {
 };
 
 gameOfLife.createAndShowBoard();
+
+

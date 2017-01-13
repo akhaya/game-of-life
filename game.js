@@ -88,19 +88,17 @@ var gameOfLife = {
     //  board.addEventListener('click', onCellClick);
     // board.addEventListener('click',onCellClick);
 
-
-    var clearBtn = document.getElementById('clear_btn');
-
     var clear = function(cell) {
-
       // Makes sure that any alive cell is reset to "dead"
+      window.clearInterval(this.setInterval);
       if (cell.getAttribute('data-status') == 'alive') {
         cell.className = "dead";
         cell.setAttribute('data-status', 'dead');
       }
-    };
 
+    };
     //clear button setup
+    var clearBtn = document.getElementById('clear_btn');
     var clearEvent = function() {
       this.forEachCell(clear)
     };

@@ -1,7 +1,7 @@
 var gameOfLife = {
 
-  width: 12,
-  height: 12, // width and height dimensions of the board
+  width: 40,
+  height: 40, // width and height dimensions of the board
   stepInterval: null, // should be used to hold reference to an interval that is "playing" the game
 
   createAndShowBoard: function() {
@@ -130,29 +130,29 @@ var gameOfLife = {
     var stepBtn = document.getElementById('step_btn')
     stepEvent = this.step.bind(this);
     stepBtn.addEventListener('click', stepEvent);
+    //step button setup
+    var playBtn = document.getElementById('play_btn')
+    playEvent = this.enableAutoPlay.bind(this);
+    playBtn.addEventListener('click', playEvent);
 
   },
 
   checkNeighbors: function(x,y){
     //check the neighboring cells and return count of alive.
-    console.log("in check neighbors")
     var alive=0;
     for (var h = (y-1); h <= (y+1); h++){
       for(var w = (x-1); w <= (x+1); w++){
         if(w!==x || h!==y){//WHAT
           var cell=document.getElementById(this.generateID(w,h));
-          console.log("in check, cell is:"+cell);
           if(this.isAlive(cell)) alive++;
         }
       }
     }
-    console.log(alive);
     return alive;
   },
 
   isAlive: function(cell){
     //Checks the status, is it alive, of a cell
-    console.log("in isAlive and the cell is:" + cell)
     if(cell){
       return cell.className==="alive"
     }else{
@@ -162,18 +162,13 @@ var gameOfLife = {
 
   runTheRules:function(alive,status){
     //checks for new state:
-    console.log("in run the rules")
     if(status===true && alive<2){
-      console.log("dead");
       return "dead";
     }else if(status===true && alive <=3){
-      console.log("alive")
       return "alive";
     }else if(status===true && alive > 3){
-      console.log("dead")
       return "dead";
     }else if(status === false && alive===3){
-      console.log("alive")
       return "alive"
     }else{
       return "dead";
@@ -189,39 +184,43 @@ var gameOfLife = {
     // You need to:
     // 1. Count alive neighbors for all cells
     // 2. Set the next state of all cells based on their alive neighbors
-    console.log("Step is running");
 
-    var newTable=""
+    //var newTable=""
     for (var h = 0; h < this.height; h++) {
-      newTable += "<tr id='row+" + h + "'>";
+      //newTable += "<tr id='row+" + h + "'>";
       for (var w = 0; w < this.width; w++) {
-        console.log("Width and Height: "+w+", "+h)
         var currentCell=document.getElementById(this.generateID(w, h));
-        console.dir(currentCell);
         var status=this.isAlive(currentCell);
-        console.log("status: "+ status)
         var aliveN=this.checkNeighbors(w,h);
-        console.log("live neighbours:"+aliveN)
         var newStatus=this.runTheRules(aliveN,status);
-        console.log("New Status: "+newStatus)
-        newTable += "<td data-status='"+newStatus+"' id='" + w + "-" + h + "' class='"+newStatus+"'></td>";
-        console.log("newTable:" +newTable)
+        function change(currentCell,newStatus){ setTimeout(function(){
+          currentCell.className = newStatus;
+          currentCell.setAttribute('data-status', newStatus)
+        })}
+        change(currentCell,newStatus);
+        //newTable += "<td data-status='"+newStatus+"' id='" + w + "-" + h + "' class='"+newStatus+"'></td>";
+        console.log(change);
 
       }
-      newTable += "</tr>";
+      //newTable += "</tr>";
     }
-    document.getElementById("tbody").remove();
-    var golTableNew = document.createElement("tbody");
-    golTableNew.id="tbody";
-    golTableNew.innerHTML = newTable;
-    var boardNew = document.getElementById('board');
-    boardNew.appendChild(golTableNew);
+    // document.getElementById("tbody").remove();
+    // var golTableNew = document.createElement("tbody");
+    // golTableNew.id="tbody";
+    // golTableNew.innerHTML = newTable;
+    // var boardNew = document.getElementById('board');
+    // boardNew.appendChild(golTableNew);
 
   },
 
   enableAutoPlay: function() {
     // Start Auto-Play by running the 'step' function
     // automatically repeatedly every fixed time interval
+      if(!this.stepInterval){
+        this.stepInterval=window.setInterval(this.step.bind(this),200)
+      }
+      console.log("Play!")
+
   }
 
 };

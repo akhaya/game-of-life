@@ -105,10 +105,9 @@ var gameOfLife = {
       this.forEachCell(clear)
     };
     clearEvent = clearEvent.bind(this);
-    clearBtn.addEventListener('click', clearEvent) // forEachCell(clear.bind()) )
+    clearBtn.addEventListener('click', clearEvent) //
 
     //random button setup
-    var randomBtn = document.getElementById('reset_btn');
     var reset = function(cell) {
       //randomizes board
       var randomNum = Math.random()
@@ -120,11 +119,13 @@ var gameOfLife = {
         cell.setAttribute('data-status', 'alive');
       }
     };
+
     var randomEvent = function() {
       this.forEachCell(reset)
     };
+    var randomBtn = document.getElementById('reset_btn');
     randomEvent = randomEvent.bind(this);
-    randomBtn.addEventListener('click', randomEvent) // forEachCell(clear.bind()) )
+    randomBtn.addEventListener('click', randomEvent)
 
     //step button setup
     var stepBtn = document.getElementById('step_btn')
@@ -160,7 +161,7 @@ var gameOfLife = {
     }
   },
 
-  runTheRules:function(alive,status){
+  runTheRules: function(alive,status){
     //checks for new state:
     if(status===true && alive<2){
       return "dead";
@@ -185,9 +186,7 @@ var gameOfLife = {
     // 1. Count alive neighbors for all cells
     // 2. Set the next state of all cells based on their alive neighbors
 
-    //var newTable=""
     for (var h = 0; h < this.height; h++) {
-      //newTable += "<tr id='row+" + h + "'>";
       for (var w = 0; w < this.width; w++) {
         var currentCell=document.getElementById(this.generateID(w, h));
         var status=this.isAlive(currentCell);
@@ -198,18 +197,9 @@ var gameOfLife = {
           currentCell.setAttribute('data-status', newStatus)
         })}
         change(currentCell,newStatus);
-        //newTable += "<td data-status='"+newStatus+"' id='" + w + "-" + h + "' class='"+newStatus+"'></td>";
-        console.log(change);
 
       }
-      //newTable += "</tr>";
     }
-    // document.getElementById("tbody").remove();
-    // var golTableNew = document.createElement("tbody");
-    // golTableNew.id="tbody";
-    // golTableNew.innerHTML = newTable;
-    // var boardNew = document.getElementById('board');
-    // boardNew.appendChild(golTableNew);
 
   },
 
@@ -219,9 +209,8 @@ var gameOfLife = {
       if(!this.stepInterval){
         this.stepInterval=window.setInterval(this.step.bind(this),200)
       }
-      console.log("Play!")
 
-  }
+  },
 
 };
 

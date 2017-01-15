@@ -21,7 +21,6 @@ var gameOfLife = {
     if(input.length>1){
       this.width=input[input.length-2]||25;
       this.height=input[input.length-1]||25;
-      console.log(this.width+" and "+this.height)
       document.getElementById("tbody").remove();
       this.createAndShowBoard();
     }

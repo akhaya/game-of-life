@@ -1,6 +1,6 @@
 var gameOfLife = {
-  width: 40,
-  height: 40, // width and height dimensions of the board
+  width: 25,
+  height: 25, // width and height dimensions of the board
   stepInterval: null, // should be used to hold reference to an interval that is "playing" the game
   speed:200,
 
@@ -15,21 +15,16 @@ var gameOfLife = {
       return /[0-9,]/.test(char);
     }).join("").split(",")
 
-    // if user enters 1 argument or 3, the first one will be speed.
-    if(input.length===1||input.length===3) this.speed=input[0]||200;
-    //if user enters 3 arguments, set the w and h
-    if(input.length===3){
-      this.width=input[1]||40;
-      this.height=input[2]||40;
+    // as long as user is not passing 2 parameters (w and h), update speed
+    if(input.length!==2) this.speed=input[0]||200;
+    //if user is passing more than speed, update board
+    if(input.length>1){
+      this.width=input[input.length-2]||25;
+      this.height=input[input.length-1]||25;
+      console.log(this.width+" and "+this.height)
+      document.getElementById("tbody").remove();
+      this.createAndShowBoard();
     }
-    //if user only enters 2, they are setting only width and height
-    if(input.length==2){
-      this.width=input[0]||40;
-      this.height=input[1]||40;
-    }
-    document.getElementById("tbody").remove();
-    this.createAndShowBoard();
-
   },
 
   createAndShowBoard: function() {
@@ -267,7 +262,7 @@ var gameOfLife = {
     // Start Auto-Play by running the 'step' function
     // automatically repeatedly every fixed time interval
       if(!this.stepInterval){
-        this.stepInterval=window.setInterval(this.step.bind(this),200)
+        this.stepInterval=window.setInterval(this.step.bind(this),this.speed)
       }else{
         window.clearInterval(this.stepInterval);
         this.stepInterval=null;

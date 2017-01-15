@@ -18,12 +18,21 @@
     <button id='reset_btn' class='btn btn-warning'>Reset Random</button>
     <button id='clear_btn' class='btn btn-info'>Clear</button>
   </div>
+  <div id="settings_panel">
+      <div class="input-group">
+        <input type="text" id="set_values" class="form-control" placeholder="speed,width,height (default: 200,40,40)">
+        <span class="input-group-btn">
+          <button id="set_btn" class="btn btn-default" type="button">Set</button>
+        </span>
+       </div><!-- /input-group -->
+       <p class="text-muted">Enter either the speed(in ms), the width and height, or all three</p>
+  </div>
 
   <br><br>
 
   <footer class="footer">
     <div class="container">
-      <p class="text-muted">Built by Aly Khayrulina and Elliot Brooks at <a href="http://www.fullstackacademy.com/">Fullstack Academy</a></p>
+      <p class="text-muted">Built by Aly Khayrulina at <a href="http://www.fullstackacademy.com/">Fullstack Academy</a></p>
     </div>
   </footer>
 

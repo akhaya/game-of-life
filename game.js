@@ -2,6 +2,35 @@ var gameOfLife = {
   width: 40,
   height: 40, // width and height dimensions of the board
   stepInterval: null, // should be used to hold reference to an interval that is "playing" the game
+  speed:200,
+
+  getUserSettings:function(){
+    //gets value
+    var input=document.getElementById('set_values').value
+    //resets input
+    document.getElementById('set_values').value=""
+    //parse input removing anything but numbers and commas, joins then returns
+    //an array of three final numbers: speed, width, height.
+    input=input.split("").filter(function(char){
+      return /[0-9,]/.test(char);
+    }).join("").split(",")
+
+    // if user enters 1 argument or 3, the first one will be speed.
+    if(input.length===1||input.length===3) this.speed=input[0]||200;
+    //if user enters 3 arguments, set the w and h
+    if(input.length===3){
+      this.width=input[1]||40;
+      this.height=input[2]||40;
+    }
+    //if user only enters 2, they are setting only width and height
+    if(input.length==2){
+      this.width=input[0]||40;
+      this.height=input[1]||40;
+    }
+    document.getElementById("tbody").remove();
+    this.createAndShowBoard();
+
+  },
 
   createAndShowBoard: function() {
 
@@ -157,6 +186,10 @@ var gameOfLife = {
     //play button setup
     document.getElementById('play_btn').addEventListener('click', function(e){
       self.enableAutoPlay()
+    })
+    //set button
+    document.getElementById('set_btn').addEventListener('click', function(e){
+      self.getUserSettings()
     })
 
   },

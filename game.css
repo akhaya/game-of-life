@@ -1,26 +1,28 @@
 body {
   padding: 10px;
+  background-color: #282c34
 }
 
 h1, h2 {
   text-align: center;
+  color:#b9c0cb
 }
 #board{
   margin: 0 auto;
 }
 
 #board td{
-  border: 1px solid #ddd;
+  border: 1px solid #3d3d3d;
   width: 18px;
   height: 18px;
 }
 
 td.alive {
-  background-color: #8CC8DD;
+  background-color: #ddd
 }
 
 td.dead {
-  background-color: #fff;
+  background-color: #282c34
 }
 
 #control_panel {

@@ -164,7 +164,10 @@ var gameOfLife = {
     this.forEachCell(function(el, w, h) {
       el.addEventListener('click', onCellClick);
     });
+  },
 
+  setUpButtonEvents:function(){
+    var self=this;
     //clear button setup
     document.getElementById('clear_btn').addEventListener('click',function(e){
      self.clear();
@@ -185,7 +188,6 @@ var gameOfLife = {
     document.getElementById('set_btn').addEventListener('click', function(e){
       self.getUserSettings()
     })
-
   },
 
   step: function() {
@@ -272,5 +274,6 @@ var gameOfLife = {
 };
 
 gameOfLife.createAndShowBoard();
+gameOfLife.setUpButtonEvents();
 
 
